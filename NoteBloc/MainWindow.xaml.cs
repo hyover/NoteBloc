@@ -12,6 +12,29 @@ namespace NoteBloc
             InitializeComponent();
         }
 
+        // Top window
+        private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            DragMove();
+        }
+
+        private void BtnMinimize_Click(object sender,  RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+        private void BtnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if(WindowState == WindowState.Maximized)
+                WindowState = WindowState.Normal;
+            else WindowState = WindowState.Maximized;
+        }
+        private void BtnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+
+        // Menu
         private void NewMenuItem_Click(object sender, RoutedEventArgs e)
         {
             CurrentTextBox.Clear();
@@ -119,6 +142,11 @@ namespace NoteBloc
         private TextBox CurrentTextBox => ((tabControlNotes.SelectedItem as TabItem)?.Content as TextBox);
 
         private void tabControlNotes_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void txtEditor1_TextChanged(object sender, TextChangedEventArgs e)
         {
 
         }

@@ -1,100 +1,165 @@
-﻿<Window x:Class="NoteBloc.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="NoteBloc" Height="450" Width="800">
+﻿<Window
+    x:Class="NoteBloc.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:NoteBloc"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="NoteBloc"
+    Width="800"
+    Height="450"
+    Background="#FF272836"
+    MouseLeftButtonDown="Window_MouseLeftButtonDown"
+    WindowStyle="None"
+    mc:Ignorable="d">
 
-    <Window.Resources>
-        <!-- Style pour TabItem -->
-        <Style TargetType="TabItem">
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Background" Value="#FF272836"/>
-            <Setter Property="Height" Value="26"/>
-            <Setter Property="Margin" Value="0,-2,-2,0"/>
-            <Setter Property="BorderBrush" Value="#FF272836"/>
-        </Style>
+    <WindowChrome.WindowChrome>
+        <WindowChrome
+            CaptionHeight="0"
+            CornerRadius="0"
+            GlassFrameThickness="0" />
+    </WindowChrome.WindowChrome>
 
-        <!-- Style pour TextBox -->
-        <Style TargetType="TextBox">
-            <Setter Property="AcceptsReturn" Value="True"/>
-            <Setter Property="AcceptsTab" Value="True"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="Background" Value="#FF272836"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="SelectionBrush" Value="{x:Null}"/>
-            <Setter Property="BorderBrush" Value="{x:Null}"/>
-            <Setter Property="SelectionTextBrush" Value="White"/>
-        </Style>
-    </Window.Resources>
 
     <Grid>
-        <DockPanel Background="#FF494A5B">
-            <Menu DockPanel.Dock="Top" Background="#FF272836" Height="21">
-                <MenuItem Header="Fichier" Foreground="White">
-                    <MenuItem Header="Nouvelle Onglet" Click="NewTabMenuItem_Click" Background="#FF272836"/>
-                    <MenuItem Header="Nouvelle Fenêtre"/>
-                    <MenuItem Header="Ouvrir" Click="OpenMenuItem_Click"/>
-                    <MenuItem Header="Enregistrer" Click="SaveMenuItem_Click"/>
-                    <MenuItem Header="Enregistrer sous"/>
-                    <MenuItem Header="Enregistrer tout"/>
-                    <Separator />
-                    <MenuItem Header="Mise en page"/>
-                    <MenuItem Header="Imprimer"/>
-                    <Separator />
-                    <MenuItem Header="Fermer l'onglet" Click="CloseTabMenuItem_Click"/>
-                    <MenuItem Header="Fermer la fenêtre"/>
-                    <MenuItem Header="Quitter" Click="ExitMenuItem_Click"/>
-                </MenuItem>
-                <MenuItem Header="Modifier" Background="#FF272836" Foreground="White">
-                    <MenuItem Header="Annuler"/>
-                    <Separator />
-                    <MenuItem Header="Couper" Click="CutMenuItem_Click"/>
-                    <MenuItem Header="Copier" Click="CopyMenuItem_Click"/>
-                    <MenuItem Header="Coller" Click="PasteMenuItem_Click"/>
-                    <MenuItem Header="Supprimer"/>
-                    <Separator />
-                    <MenuItem Header="Rechercher"/>
-                    <MenuItem Header="Remplacer"/>
-                    <Separator />
-                    <MenuItem Header="Tout sélectionner"/>
-                    <MenuItem Header="Heure/Date"/>
-                    <Separator />
-                    <MenuItem Header="Police"/>
-                </MenuItem>
-                <MenuItem Header="Affichage" Foreground="White">
-                    <MenuItem Header="Affichage" Foreground="White">
-                        <MenuItem Header="Zoom"/>
-                        <MenuItem Header="Barre d'état"/>
-                        <MenuItem Header="Retour automatique à la ligne"/>
-                    </MenuItem>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <!--  Pour le menu  -->
+            <RowDefinition Height="*" />
+            <!--  Pour le reste du contenu  -->
+        </Grid.RowDefinitions>
 
-                </MenuItem>
-            </Menu>
-            <TabControl Name="tabControlNotes" Background="#FF272836" SelectionChanged="tabControlNotes_SelectionChanged">
+
+        <DockPanel Grid.Row="0">
+            <Grid>
+                <Menu
+                    Height="21"
+                    Margin="5,5,0,0"
+                    Background="#FF272836"
+                    Foreground="White">
+                    <MenuItem Header="Fichier">
+                        <MenuItem Click="NewTabMenuItem_Click" Header="Nouvelle Onglet" />
+                        <MenuItem Header="Nouvelle Fenêtre" />
+                        <MenuItem Click="OpenMenuItem_Click" Header="Ouvrir" />
+                        <MenuItem Click="SaveMenuItem_Click" Header="Enregistrer" />
+                        <MenuItem Header="Enregistrer sous" />
+                        <MenuItem Header="Enregistrer tout" />
+                        <Separator />
+                        <MenuItem Header="Mise en page" />
+                        <MenuItem Header="Imprimer" />
+                        <Separator />
+                        <MenuItem Click="CloseTabMenuItem_Click" Header="Fermer l'onglet" />
+                        <MenuItem Header="Fermer la fenêtre" />
+                        <MenuItem Click="ExitMenuItem_Click" Header="Quitter" />
+                    </MenuItem>
+                    <MenuItem Header="Modifier">
+                        <MenuItem Header="Annuler" />
+                        <Separator />
+                        <MenuItem Click="CutMenuItem_Click" Header="Couper" />
+                        <MenuItem Click="CopyMenuItem_Click" Header="Copier" />
+                        <MenuItem Click="PasteMenuItem_Click" Header="Coller" />
+                        <MenuItem Header="Supprimer" />
+                        <Separator />
+                        <MenuItem Header="Rechercher" />
+                        <MenuItem Header="Remplacer" />
+                        <Separator />
+                        <MenuItem Header="Tout sélectionner" />
+                        <MenuItem Header="Heure/Date" />
+                        <Separator />
+                        <MenuItem Header="Police" />
+                    </MenuItem>
+                    <MenuItem Header="Affichage">
+                        <MenuItem Header="Zoom" />
+                        <MenuItem Header="Barre d'état" />
+                        <MenuItem Header="Retour automatique à la ligne" />
+                    </MenuItem>
+                </Menu>
+
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <Button
+                        x:Name="btnMinimize"
+                        Width="40"
+                        Height="40"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Click="BtnMinimize_Click"
+                        Content="_"
+                        Foreground="White" />
+                    <Button
+                        x:Name="btnMaximize"
+                        Width="40"
+                        Height="40"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Click="BtnMaximize_Click"
+                        Content="🗖"
+                        Foreground="White" />
+                    <Button
+                        x:Name="btnClose"
+                        Width="40"
+                        Height="40"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Click="BtnClose_Click"
+                        Content="X"
+                        Foreground="White" />
+                </StackPanel>
+            </Grid>
+        </DockPanel>
+
+        <DockPanel Grid.Row="1">
+            <TabControl
+                Name="tabControlNotes"
+                Grid.Row="0"
+                Margin="10"
+                Background="#FF272836"
+                BorderBrush="{x:Null}"
+                BorderThickness="0">
                 <TabControl.Resources>
+                    <!--  Style pour TabItem, adapté de l'exemple que vous avez fourni  -->
                     <Style TargetType="TabItem">
-                        <Setter Property="HeaderTemplate">
+                        <Setter Property="Template">
                             <Setter.Value>
-                                <DataTemplate>
-                                    <DockPanel Width="120" Background="#FF272836">
-                                        <Button Click="CloseTabMenuItem_Click"
-                                    Content="x" DockPanel.Dock="Right" 
-                                    Foreground="White" Background="#FF272836" FontSize="16" FontWeight="Bold" 
-                                    Width="20" Height="20" Padding="0" 
-                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}}" 
-                                    VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
-                                        <TextBlock Text="{Binding}" VerticalAlignment="Center" />
-                                    </DockPanel>
-                                </DataTemplate>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Grid Name="Panel" Background="#FF272836">
+                                        <ContentPresenter
+                                            x:Name="ContentSite"
+                                            Margin="10,2"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            ContentSource="Header" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="Panel" Property="Background" Value="LightSkyBlue" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Panel" Property="Background" Value="#FF272836" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
                             </Setter.Value>
                         </Setter>
                     </Style>
                 </TabControl.Resources>
-                <TabItem Header="Sans titre" Background="#FF272836" Foreground="White" Margin="2,-2,-2,0">
-                    <TextBox Name="txtEditor1" />
+                <TabItem Header="Sans titre">
+                    <TextBox Name="txtEditor1" TextChanged="txtEditor1_TextChanged" />
                 </TabItem>
             </TabControl>
         </DockPanel>
     </Grid>
+
+
+    <Window.Resources>
+        <!--  Style pour TextBox  -->
+        <Style TargetType="TextBox">
+            <Setter Property="AcceptsReturn" Value="True" />
+            <Setter Property="AcceptsTab" Value="True" />
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Background" Value="#FF272836" />
+            <Setter Property="Foreground" Value="White" />
+        </Style>
+    </Window.Resources>
 </Window>
