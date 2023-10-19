@@ -1,0 +1,16 @@
+﻿<Window x:Class="NoteBloc.SaveChangesDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="NoteBloc" Height="200" Width="400">
+    <Grid>
+        <!-- TextBlock centré -->
+        <TextBlock Name="txtMessage" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" TextWrapping="Wrap" />
+
+        <!-- StackPanel pour les boutons, centrée avec un espacement vertical -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10">
+            <Button Content="Enregistrer" Margin="0,0,10,0" Click="SaveButton_Click" Width="100" Padding="10"/>
+            <Button Content="Ne pas enregistrer" Margin="0,0,10,0" Click="DontSaveButton_Click" Width="130" Padding="10"/>
+            <Button Content="Annuler" Click="CancelButton_Click" Width="100" Padding="10"/>
+        </StackPanel>
+    </Grid>
+</Window>
