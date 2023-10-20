@@ -1,10 +1,12 @@
-﻿<Window
+﻿
+<Window
     x:Class="NoteBloc.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:NoteBloc"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:NoteBloc.ViewModels"
     Title="NoteBloc"
     Width="800"
     Height="450"
@@ -13,12 +15,19 @@
     WindowStyle="None"
     mc:Ignorable="d">
 
+    <!--  Définir le DataContext ici  -->
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+
+
     <WindowChrome.WindowChrome>
         <WindowChrome
             CaptionHeight="0"
             CornerRadius="0"
             GlassFrameThickness="0" />
     </WindowChrome.WindowChrome>
+
 
 
     <Grid>
@@ -31,15 +40,24 @@
 
 
         <DockPanel Grid.Row="0">
+
             <Grid>
-                <Menu
-                    Height="21"
-                    Margin="5,5,0,0"
-                    Background="#FF272836"
-                    Foreground="White">
-                    <MenuItem Header="Fichier">
+                <Grid.Resources>
+                    <!--  Style pour le MenuItem  -->
+                    <Style TargetType="{x:Type Menu}">
+                        <Setter Property="Background" Value="#FF272836" />
+                    </Style>
+
+                    <Style TargetType="{x:Type MenuItem}">
+                        <Setter Property="Foreground" Value="#FF272836" />
+                    </Style>
+                </Grid.Resources>
+
+
+                <Menu Height="21" Margin="5,12,622,7">
+                    <MenuItem Foreground="White" Header="Fichier">
                         <MenuItem Click="NewTabMenuItem_Click" Header="Nouvelle Onglet" />
-                        <MenuItem Header="Nouvelle Fenêtre" />
+                        <MenuItem Command="{Binding NewWindowCommand}" Header="Nouvelle Fenêtre" />
                         <MenuItem Click="OpenMenuItem_Click" Header="Ouvrir" />
                         <MenuItem Click="SaveMenuItem_Click" Header="Enregistrer" />
                         <MenuItem Header="Enregistrer sous" />
@@ -49,10 +67,11 @@
                         <MenuItem Header="Imprimer" />
                         <Separator />
                         <MenuItem Click="CloseTabMenuItem_Click" Header="Fermer l'onglet" />
-                        <MenuItem Header="Fermer la fenêtre" />
-                        <MenuItem Click="ExitMenuItem_Click" Header="Quitter" />
+                        <MenuItem Command="{Binding CloseWindowCommand}" Header="Fermer la fenêtre" />
+                        <MenuItem Command="{Binding CloseAllWindowsCommand}" Header="Quitter" />
+
                     </MenuItem>
-                    <MenuItem Header="Modifier">
+                    <MenuItem Foreground="White" Header="Modifier">
                         <MenuItem Header="Annuler" />
                         <Separator />
                         <MenuItem Click="CutMenuItem_Click" Header="Couper" />
@@ -64,17 +83,16 @@
                         <MenuItem Header="Remplacer" />
                         <Separator />
                         <MenuItem Header="Tout sélectionner" />
-                        <MenuItem Header="Heure/Date" />
+                        <MenuItem Header="Ajouter Date/Heure" />
                         <Separator />
                         <MenuItem Header="Police" />
                     </MenuItem>
-                    <MenuItem Header="Affichage">
+                    <MenuItem Foreground="White" Header="Affichage">
                         <MenuItem Header="Zoom" />
                         <MenuItem Header="Barre d'état" />
                         <MenuItem Header="Retour automatique à la ligne" />
                     </MenuItem>
                 </Menu>
-
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         x:Name="btnMinimize"
@@ -82,7 +100,7 @@
                         Height="40"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Click="BtnMinimize_Click"
+                        Command="{Binding MinimizeWindowCommand}"
                         Content="_"
                         Foreground="White" />
                     <Button
@@ -91,7 +109,7 @@
                         Height="40"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Click="BtnMaximize_Click"
+                        Command="{Binding MaximizeWindowCommand}"
                         Content="🗖"
                         Foreground="White" />
                     <Button
@@ -100,52 +118,90 @@
                         Height="40"
                         Background="Transparent"
                         BorderBrush="Transparent"
-                        Click="BtnClose_Click"
+                        Command="{Binding CloseWindowCommand}"
                         Content="X"
                         Foreground="White" />
                 </StackPanel>
+
+
             </Grid>
         </DockPanel>
 
         <DockPanel Grid.Row="1">
             <TabControl
                 Name="tabControlNotes"
-                Grid.Row="0"
                 Margin="10"
                 Background="#FF272836"
                 BorderBrush="{x:Null}"
                 BorderThickness="0">
                 <TabControl.Resources>
-                    <!--  Style pour TabItem, adapté de l'exemple que vous avez fourni  -->
+
                     <Style TargetType="TabItem">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="TabItem">
                                     <Grid Name="Panel" Background="#FF272836">
-                                        <ContentPresenter
-                                            x:Name="ContentSite"
-                                            Margin="10,2"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            ContentSource="Header" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <!--  Content de l'onglet  -->
+                                            <ContentPresenter
+                                                x:Name="ContentSite"
+                                                Margin="10,2"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                ContentSource="Header" />
+
+                                            <!--  Bouton de fermeture  -->
+                                            <Button
+                                                x:Name="CloseButton"
+                                                Width="20"
+                                                Height="20"
+                                                Margin="5,0,0,0"
+                                                Padding="0"
+                                                VerticalAlignment="Center"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Click="CloseTabMenuItem_Click"
+                                                Content="X" />
+                                        </StackPanel>
                                     </Grid>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="Panel" Property="Background" Value="LightSkyBlue" />
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="False">
-                                            <Setter TargetName="Panel" Property="Background" Value="#FF272836" />
+                                            <Setter TargetName="Panel" Property="Background" Value="White" />
                                         </Trigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Header.Content}" Value="+">
+                                            <Setter TargetName="CloseButton" Property="Visibility" Value="Collapsed" />
+                                        </DataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
                     </Style>
+
+
                 </TabControl.Resources>
                 <TabItem Header="Sans titre">
                     <TextBox Name="txtEditor1" TextChanged="txtEditor1_TextChanged" />
                 </TabItem>
+
+                <TabItem PreviewMouseLeftButtonDown="NewTabMenuItem_Click">
+                    <TabItem.Header>
+                        <Button
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Content="+" />
+                    </TabItem.Header>
+                </TabItem>
+
+
+
+
+
             </TabControl>
+
+
         </DockPanel>
     </Grid>
 
@@ -160,6 +216,9 @@
             <Setter Property="TextWrapping" Value="Wrap" />
             <Setter Property="Background" Value="#FF272836" />
             <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+
         </Style>
     </Window.Resources>
 </Window>
