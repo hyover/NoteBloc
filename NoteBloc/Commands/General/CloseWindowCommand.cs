@@ -33,12 +33,11 @@ namespace NoteBloc.Commands.General
             {
                 var mainViewModel = window.DataContext as MainViewModel;
 
-                // Supposons que vous ayez une propriété NoteContent pour le contenu de la note
-                // et une propriété NoteName pour le nom de la note
-                if (mainViewModel != null && _noteService.NoteHasUnsavedChanges(mainViewModel.content))
+                // Utilisation des nouvelles propriétés pour vérifier les modifications non enregistrées et afficher le dialogue
+                if (mainViewModel != null && _noteService.NoteHasUnsavedChanges(mainViewModel.CurrentNoteContent))
                 {
                     // Passez le nom de la note au constructeur de SaveChangesDialog
-                    var saveChangesDialog = new SaveChangesDialog(mainViewModel.name);
+                    var saveChangesDialog = new SaveChangesDialog(mainViewModel.CurrentNoteName);
                     saveChangesDialog.ShowDialog();
 
                     // TODO: Ajoutez la logique pour gérer le choix de l'utilisateur
@@ -49,6 +48,7 @@ namespace NoteBloc.Commands.General
                 }
             }
         }
+
 
     }
 }

@@ -15,6 +15,9 @@ namespace NoteBloc.ViewModels
         public ICommand NewWindowCommand { get; }
 
         private readonly INoteService _noteService;
+        public string CurrentNoteName { get; set; }
+        public string CurrentNoteContent { get; set; }
+
 
 
         public MainViewModel(INoteService noteService)
@@ -27,6 +30,11 @@ namespace NoteBloc.ViewModels
             NewWindowCommand = new NewWindowCommand();
             _noteService = noteService;
         }
+
+        public MainViewModel()
+        {
+        }
+
 
         // Utilisez le service pour vérifier si des modifications ont été apportées
         public bool NoteHasUnsavedChanges(string content)
