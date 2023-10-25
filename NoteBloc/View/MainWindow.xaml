@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="NoteBloc.MainWindow"
+    x:Class="NoteBloc.View.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -10,7 +10,7 @@
     Width="800"
     Height="450"
     Background="#FF272836"
-    MouseLeftButtonDown="{Binding DragWindowCommand}"
+    MouseLeftButtonDown="Window_MouseLeftButtonDown"
     WindowStyle="None"
     mc:Ignorable="d">
 
@@ -54,8 +54,7 @@
                         <MenuItem Command="{Binding NewWindowCommand}" Header="Nouvelle Fenêtre" />
                         <MenuItem Header="Ouvrir" />
                         <MenuItem Header="Enregistrer" />
-                        <MenuItem Header="Enregistrer sous" />
-                        <MenuItem Header="Enregistrer tout" />
+                        <MenuItem Command="{Binding SaveAsCommand}" Header="Enregistrer sous" />
                         <Separator />
                         <MenuItem Header="Mise en page" />
                         <MenuItem Header="Imprimer" />
@@ -87,6 +86,8 @@
                         <MenuItem Header="Retour automatique à la ligne" />
                     </MenuItem>
                 </Menu>
+
+                <!--  Top Panel  -->
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                     <Button
                         x:Name="btnMinimize"
@@ -144,17 +145,7 @@
                                                 VerticalAlignment="Center"
                                                 ContentSource="Header" />
 
-                                            <!--  Bouton de fermeture  -->
-                                            <Button
-                                                x:Name="CloseButton"
-                                                Width="20"
-                                                Height="20"
-                                                Margin="5,0,0,0"
-                                                Padding="0"
-                                                VerticalAlignment="Center"
-                                                Background="Transparent"
-                                                BorderThickness="0"
-                                                Content="X" />
+
                                         </StackPanel>
                                     </Grid>
                                     <ControlTemplate.Triggers>
@@ -164,9 +155,7 @@
                                         <Trigger Property="IsSelected" Value="False">
                                             <Setter TargetName="Panel" Property="Background" Value="White" />
                                         </Trigger>
-                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Header.Content}" Value="+">
-                                            <Setter TargetName="CloseButton" Property="Visibility" Value="Collapsed" />
-                                        </DataTrigger>
+
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -175,8 +164,9 @@
 
 
                 </TabControl.Resources>
-                <TabItem Header="Sans titre">
-                    <TextBox Name="NoteTextBox" TextChanged="NoteTextBox_TextChanged" />
+                <TabItem Header="{Binding CurrentNoteName}">
+                    <!--  ajouter nom par défaut  -->
+                    <TextBox Name="NoteTextBox" Text="{Binding CurrentNoteContent, UpdateSourceTrigger=PropertyChanged}" />
                 </TabItem>
 
                 <TabItem>

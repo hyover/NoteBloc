@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
+using NoteBloc.View;
+
 
 namespace NoteBloc.Commands.Fichier
 {

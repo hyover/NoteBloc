@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NoteBloc.Models
 {
     public class Note
     {
-        public string name {  get; set; }
-        public string content { get; set; }
-        public DateTime lastModified { get; set; }
-
+        public string Id { get; set; }
+        public string FilePath { get; set; }
+        public string Name { get; set; }
+        public string Content { get; set; }
+        public DateTime LastModified { get; set; }
     }
+
 }

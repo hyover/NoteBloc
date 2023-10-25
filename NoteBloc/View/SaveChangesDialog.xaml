@@ -8,7 +8,7 @@
     <Grid>
         <!--  TextBlock centré  -->
         <TextBlock
-            Name="txtMessage"
+            x:Name="txtMessage"
             Margin="10"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"

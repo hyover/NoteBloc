@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using NoteBloc.Services;
 using NoteBloc.ViewModels;
 
 namespace NoteBloc.View
@@ -11,14 +13,12 @@ namespace NoteBloc.View
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(new FileNoteService());
         }
 
-        private void NoteTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var viewModel = DataContext as MainViewModel;
-            viewModel.CurrentNoteContent = (sender as TextBox).Text;
-            // Mettez à jour CurrentNoteName si nécessaire, par exemple si vous avez une TextBox pour le titre de la note.
+            DragMove();
         }
 
     }

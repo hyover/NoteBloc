@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NoteBloc.Models;
 
-namespace NoteBloc.Services
+
+namespace NoteBloc.Services;
+
+public interface INoteService
 {
-    public interface INoteService
-    {
-        bool NoteHasUnsavedChanges(string content);
-    }
-
+    void Save(Note note);
+    // D'autres méthodes pour charger, etc. peuvent être ajoutées plus tard
 }
